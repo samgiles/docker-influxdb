@@ -1,0 +1,15 @@
+[Unit]
+Description=InfluxDB
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill influxdb1
+ExecStartPre=-/usr/bin/docker rm influxdb1
+ExecStartPre=/usr/bin/docker pull samgiles/influxdb
+ExecStart=/usr/bin/docker run -d --name influxdb1 -p 8083:8083 -p 8086:8086 samgiles/influxdb
+ExecStop=/usr/bin/docker stop influxdb1
+
+[Install]
+WantedBy=multi-user.target
